@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, render_template, redirect, url_for
 import json
 import tweet
 
@@ -12,6 +10,10 @@ def hello():
 
 @app.route('/', methods=['POST'])
 def id_posted():
+    try:
+        int(request.form['tweet_id'])
+    except ValueError:
+        return redirect(url_for("hello"))
     return render_template('base.html', tweet_text=json.dumps(tweet.get_json(**request.form), indent=2, sort_keys=True))
 
 if __name__ == '__main__':
