@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
 import json
-import tweet
+from showtweet import tweet
 
 app = Flask(__name__)
 
