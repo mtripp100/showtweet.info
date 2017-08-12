@@ -12,7 +12,7 @@ def hello():
 
 @app.route('/', methods=['POST'])
 def id_posted():
-    return render_template('base.html', tweet_text=json.dumps(tweet.get_json(request.form['tweet_id']), indent=2, sort_keys=True))
+    return render_template('base.html', tweet_text=json.dumps(tweet.get_json(**request.form), indent=2, sort_keys=True))
 
 if __name__ == '__main__':
     app.run(debug=True)

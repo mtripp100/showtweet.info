@@ -18,8 +18,12 @@
             <pre>{{ tweet_text }}</pre>
             {% else %}
             <h3>Enter tweet ID and click the button...</h3>
-            <form action="." method="POST" class="form-inline">
+            <form action="." method="POST">
                 <input type="text" class="form-control" name="tweet_id">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="include_users" checked>Include users</label>
+                    <label><input type="checkbox" name="include_entities" checked>Include entities</label>
+                </div>
                 <button type="submit" class="btn btn-default">Show</button>
             </form>
             {% endif %}

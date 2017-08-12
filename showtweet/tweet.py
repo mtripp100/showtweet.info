@@ -3,10 +3,14 @@ import urllib.parse
 import base64
 import requests
 
-def get_json(tweet_id):
+def get_json(tweet_id, **kwargs):
+    params = {"id": tweet_id,
+              "trim_user": "false" if "include_users" in kwargs else "true",
+              "include_entities": "true" if "include_entities" in kwargs else "false"}
     token = obtain_bearer_token()
-    rq = requests.get("https://api.twitter.com/1.1/statuses/show.json", headers={"Authorization": "Bearer {}".format(token)},
-                      params={"id": tweet_id})
+    rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
+                      headers={"Authorization": "Bearer {}".format(token)},
+                      params=params)
     return rq.json()
 
 def obtain_bearer_token():
