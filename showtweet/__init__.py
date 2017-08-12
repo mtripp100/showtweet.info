@@ -1,4 +1,16 @@
 from flask import Flask
+from flask import request
+from flask import render_template
 
 app = Flask(__name__)
-from showtweet import views  # noqa
+
+@app.route('/')
+def hello():
+    return render_template('base.html')
+
+@app.route('/', methods=['POST'])
+def id_posted():
+    return request.form['tweet_id']
+
+if __name__ == '__main__':
+    app.run(debug=True)
