@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import render_template
-import pprint
+import json
 import tweet
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def hello():
 
 @app.route('/', methods=['POST'])
 def id_posted():
-    return "<pre>{}</pre>".format(pprint.pformat(tweet.get_json(request.form['tweet_id'])))
+    return render_template('base.html', tweet_text=json.dumps(tweet.get_json(request.form['tweet_id']), indent=2, sort_keys=True))
 
 if __name__ == '__main__':
     app.run(debug=True)
