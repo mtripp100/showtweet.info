@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import render_template
+import tweet
 
 app = Flask(__name__)
 
@@ -10,7 +11,7 @@ def hello():
 
 @app.route('/', methods=['POST'])
 def id_posted():
-    return request.form['tweet_id']
+    return tweet.get_json(request.form['tweet_id'])
 
 if __name__ == '__main__':
     app.run(debug=True)
