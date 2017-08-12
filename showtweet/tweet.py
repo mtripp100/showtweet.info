@@ -3,16 +3,6 @@ import urllib.parse
 import base64
 import requests
 
-def get_json(tweet_id, **kwargs):
-    params = {"id": tweet_id,
-              "trim_user": "false" if "include_users" in kwargs else "true",
-              "include_entities": "true" if "include_entities" in kwargs else "false"}
-    token = obtain_bearer_token()
-    rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
-                      headers={"Authorization": "Bearer {}".format(token)},
-                      params=params)
-    return rq.json()
-
 def obtain_bearer_token():
     rq = requests.post("https://api.twitter.com/oauth2/token", headers={'Authorization': "Basic {}".format(_encode_keys()),
                                                                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
@@ -26,3 +16,14 @@ def _encode_keys():
     secret = urllib.parse.quote_plus(os.environ['CONSUMER_SECRET'])
     concatenated = "{}:{}".format(consumer, secret).encode()
     return base64.b64encode(concatenated).decode()
+
+TOKEN = obtain_bearer_token()
+
+def get_json(tweet_id, **kwargs):
+    params = {"id": tweet_id,
+              "trim_user": "false" if "include_users" in kwargs else "true",
+              "include_entities": "true" if "include_entities" in kwargs else "false"}
+    rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
+                      headers={"Authorization": "Bearer {}".format(TOKEN)},
+                      params=params)
+    return rq.json()
