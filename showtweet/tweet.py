@@ -4,13 +4,16 @@ import base64
 import requests
 
 def get_json(tweet_id):
-    return "{} - nothing to see here...".format(tweet_id)
+    token = obtain_bearer_token()
+    rq = requests.get("https://api.twitter.com/1.1/statuses/show.json", headers={"Authorization": "Bearer {}".format(token)},
+                      params={"id": tweet_id})
+    return rq.json()
 
 def obtain_bearer_token():
     rq = requests.post("https://api.twitter.com/oauth2/token", headers={'Authorization': "Basic {}".format(_encode_keys()),
                                                                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
                        data='grant_type=client_credentials')
-    response = rq.text
+    response = rq.json()
     assert 'bearer' == response['token_type']
     return response['access_token']
 
