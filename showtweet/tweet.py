@@ -31,8 +31,12 @@ def get_json(tweet_id, **kwargs):
     return rq.json()
 
 def record_metrics(headers):
-    rate_metric = "{}.rate_limit {}\n".format(os.environ['HOSTEDGRAPHITE_APIKEY'], headers['x-rate-limit-remaining'])
+    metrics = {
+        "rate_limit_remaining": headers['x-rate-limit-remaining'],
+        "twitter_response_time": headers['x-response-time']
+    }
 
-    conn = socket.create_connection(("efc43c1b.carbon.hostedgraphite.com", 2003))
-    conn.send(rate_metric.encode())
-    conn.close()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    for name, value in metrics.items():
+        metric = "{}.{} {}\n".format(os.environ['HOSTEDGRAPHITE_APIKEY'], name, value)
+        sock.sendto(metric.encode(), ("efc43c1b.carbon.hostedgraphite.com", 2003))
