@@ -15,6 +15,3 @@ def id_posted():
     except ValueError:
         return redirect(url_for("hello"))
     return render_template('base.html', tweet_text=json.dumps(tweet.get_json(**request.form), indent=2, sort_keys=True))
-
-if __name__ == '__main__':
-    app.run(debug=True)
