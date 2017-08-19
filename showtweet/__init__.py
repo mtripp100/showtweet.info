@@ -1,6 +1,6 @@
+from showtweet import twitter
 from flask import Flask, request, render_template, redirect, url_for
 import json
-from showtweet import tweet
 
 app = Flask(__name__)
 
@@ -14,7 +14,8 @@ def id_posted():
         int(request.form["tweet_id"])
     except ValueError:
         return redirect(url_for("hello"))
-    return render_template("base.html",
-                           tweet_text=json.dumps(tweet.get_json(**request.form),
-                                                 indent=2,
-                                                 sort_keys=True))
+    return render_template(
+        "base.html", tweet_text=json.dumps(
+            twitter.get_json(**request.form), indent=2, sort_keys=True
+        )
+    )
