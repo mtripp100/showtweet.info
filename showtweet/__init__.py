@@ -1,4 +1,4 @@
-from showtweet import twitter
+from showtweet import twitter, form
 from flask import Flask, request, render_template, redirect, url_for, abort
 import json
 
@@ -10,7 +10,7 @@ def hello():
 
 @app.route("/", methods=["POST"])
 def id_posted():
-    return redirect(url_for("show_tweet", **request.form.to_dict()))
+    return redirect(url_for("show_tweet", **form.generate_tweet_options(request.form)))
 
 @app.route("/<tweet_id>")
 def show_tweet(tweet_id):

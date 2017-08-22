@@ -24,8 +24,8 @@ TOKEN = obtain_bearer_token()
 
 def get_json(tweet_id, **kwargs):
     params = {"id": tweet_id,
-              "trim_user": "true" if "no_users" in kwargs else "false",
-              "include_entities": "false" if "no_entities" in kwargs else "true"}
+              "trim_user": kwargs.get("trim_user", "false"),
+              "include_entities": kwargs.get("include_entities", "true")}
     rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
                       headers={"Authorization": "Bearer {}".format(TOKEN)},
                       params=params)
