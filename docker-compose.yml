@@ -4,13 +4,4 @@ services:
         build: .
         image: showtweet
         env_file:
-            - .dockerenv
-    proxy:
-        image: nginx:latest
-        ports:
-            - "80:80"
-        volumes:
-            - "./nginx:/etc/nginx/conf.d"
-            - "./showtweet/static:/var/www/showtweet.info"
-        depends_on:
-            - web
+            - .env
