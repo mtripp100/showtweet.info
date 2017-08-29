@@ -2,6 +2,7 @@ import os
 import urllib.parse
 import base64
 import requests
+import socket
 
 def obtain_bearer_token():
     rq = requests.post("https://api.twitter.com/oauth2/token",
@@ -29,4 +30,17 @@ def get_json(tweet_id, **kwargs):
     rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
                       headers={"Authorization": "Bearer {}".format(TOKEN)},
                       params=params)
+
+    record_metrics(rq.headers)
     return rq.json()
+
+def record_metrics(headers):
+    metrics = {
+        "rate_limit_remaining": headers["x-rate-limit-remaining"],
+        "twitter_response_time": headers["x-response-time"]
+    }
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    for name, value in metrics.items():
+        metric = "{}.{} {}\n".format(os.environ["HOSTEDGRAPHITE_APIKEY"], name, value)
+        sock.sendto(metric.encode(), ("22f5cb89.carbon.hostedgraphite.com", 2003))
