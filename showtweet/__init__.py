@@ -2,7 +2,7 @@ from showtweet import twitter, form
 from flask import Flask, request, render_template, redirect, url_for
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="")
 
 @app.route("/")
 def hello():
