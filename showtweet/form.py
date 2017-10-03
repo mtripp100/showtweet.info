@@ -8,4 +8,4 @@ def generate_tweet_options(form):
     return options
 
 def _parse_tweet_id(given):
-    return given.rsplit("/", 1)[-1]
+    return given.rsplit("/", 1)[-1].strip()
