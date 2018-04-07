@@ -4,6 +4,7 @@ import base64
 import requests
 import socket
 
+
 def obtain_bearer_token():
     rq = requests.post("https://api.twitter.com/oauth2/token",
                        headers={"Authorization": "Basic {}".format(_encode_keys()),
@@ -14,6 +15,7 @@ def obtain_bearer_token():
     assert "bearer" == response["token_type"]
     return response["access_token"]
 
+
 def _encode_keys():
     consumer = urllib.parse.quote_plus(os.environ["CONSUMER_KEY"])
     secret = urllib.parse.quote_plus(os.environ["CONSUMER_SECRET"])
@@ -21,18 +23,18 @@ def _encode_keys():
     return base64.b64encode(concatenated).decode()
 
 
-TOKEN = obtain_bearer_token()
-
 def get_json(tweet_id, **kwargs):
+    token = obtain_bearer_token()
     params = {"id": tweet_id,
               "trim_user": kwargs.get("trim_user", "false"),
               "include_entities": kwargs.get("include_entities", "true")}
     rq = requests.get("https://api.twitter.com/1.1/statuses/show.json",
-                      headers={"Authorization": "Bearer {}".format(TOKEN)},
+                      headers={"Authorization": "Bearer {}".format(token)},
                       params=params)
 
     record_metrics(rq.headers)
     return rq.json()
+
 
 def record_metrics(headers):
     metrics = {
