@@ -1,9 +1,5 @@
-FROM python:3
+FROM kennethreitz/pipenv
 
-WORKDIR /app
-ADD . /app
+COPY . /app
 
-RUN pip install -r requirements.txt
-
-EXPOSE 8000
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "-w", "2", "showtweet:app"]
