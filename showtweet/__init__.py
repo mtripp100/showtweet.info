@@ -29,5 +29,8 @@ def show_tweet(tweet_id):
     except ValueError:
         return abort(400)
     return render_template(
-        "base.html", tweet_text=json.dumps(twitter.get_json(tweet_id, **request.args), indent=2, sort_keys=True)
+        "base.html",
+        tweet_text=json.dumps(
+            twitter.get_json(tweet_id, **request.args), indent=2, sort_keys=True
+        ),
     )
