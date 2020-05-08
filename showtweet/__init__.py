@@ -1,6 +1,8 @@
-from showtweet import twitter, form
-from flask import Flask, request, render_template, redirect, url_for, abort
 import json
+
+from flask import Flask, abort, redirect, render_template, request, url_for
+
+from showtweet import form, twitter
 
 app = Flask(__name__, static_url_path="")
 
@@ -27,7 +29,5 @@ def show_tweet(tweet_id):
     except ValueError:
         return abort(400)
     return render_template(
-        "base.html", tweet_text=json.dumps(
-            twitter.get_json(tweet_id, **request.args), indent=2, sort_keys=True
-        )
+        "base.html", tweet_text=json.dumps(twitter.get_json(tweet_id, **request.args), indent=2, sort_keys=True)
     )
