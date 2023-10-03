@@ -29,6 +29,6 @@ rope==0.20.1
 toml==0.10.2
 tomli==1.2.1
 typing-extensions==3.10.0.2
-urllib3==1.26.8
+urllib3==1.26.17
 Werkzeug==2.2.3
 wrapt==1.12.1
